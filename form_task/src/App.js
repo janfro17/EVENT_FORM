@@ -2,7 +2,7 @@ import './App.css';
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
-import EventAddFrom from "./components/EventAddFrom";
+import EventAddFrom from "./components/EventAddForm";
 import EventView from "./components/EventView";
 import EventList from "./components/EventList";
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-function EventView(props) {
+function EventView() {
     return (
         <div>event view</div>
     );
