@@ -14,6 +14,8 @@ import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Input from '@mui/material/Input';
+import { useGetEventsQuery, useGetEventQuery,
+    useAddEventMutation } from "../api/apiSlice";
 
 
 const formStyle = {margin: '20px 0', display: 'block'}
@@ -74,6 +76,16 @@ const validationSchema = yup.object({
 });
 
 const EventAddFrom = () => {
+    const {
+        data: events,
+        isLoading,
+        isSuccess,
+        isError,
+        error
+    } = useGetEventsQuery();
+    const [getEvent] = useGetEventQuery();
+    const [addEvent] = useAddEventMutation();
+
     const initialValues = {
         title: '',
         start_date: moment(),
@@ -93,10 +105,20 @@ const EventAddFrom = () => {
         validationSchema: validationSchema,
         onSubmit: (values,{resetForm} ) => {
             console.log(values);
+            addEvent(values);
             resetForm(values);
             alert(JSON.stringify(values, null, 2));
         },
     });
+
+    let content;
+    if (isLoading) {
+        content = <p>Loading...</p>
+    } else if (isSuccess) {
+        content = JSON.stringify(events)
+    } else if (isError) {
+        content = <p>{error}</p>
+    }
 
     return (
         <div className='form'>
@@ -257,6 +279,7 @@ const EventAddFrom = () => {
                     Reset All
                     </Button>
             </form>
+            <div>{content}</div>
         </div>
     );
 }

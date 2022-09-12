@@ -1,0 +1,30 @@
+{
+  "events": [
+    {
+      "title": "Event1",
+      "start_date": "22/09/2022",
+      "start_time": "22:22",
+      "end_date": "23/09/2022",
+      "end_time": "22:22",
+      "description": "Event desc",
+      "image": null,
+      "type": "Sport",
+      "place": "NY",
+      "phone_number": "909878656",
+      "email": "test@test.pl"
+    },
+    {
+      "title": "Event2",
+      "start_date": "22/09/2022",
+      "start_time": "22:22",
+      "end_date": "23/09/2022",
+      "end_time": "22:22",
+      "description": "Event desc",
+      "image": null,
+      "type": "Sport",
+      "place": "NY",
+      "phone_number": "909878656",
+      "email": "test@test.pl"
+    }
+  ]
+}
