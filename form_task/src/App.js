@@ -15,7 +15,7 @@ function App() {
     <Routes>
       <Route path="/" element={<EventList />} />
       <Route path="/event/ID" element={<EventView />} />
-      <Route path="/add-event" element={< EventAddFrom />} />
+      <Route path="/add-event" element={<EventAddFrom />} />
       <Route path="/404" element={<NotFoundPage />} />
       <Route path="*" element={<Navigate replace to="/404" />} />
     </Routes>
