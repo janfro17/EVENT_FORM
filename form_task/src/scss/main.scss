@@ -1,9 +1,7 @@
-.form {
-  width: 1440px;
+.container {
+  width: 600px;
   margin: 0 auto;
-  &-title {
-    text-align: center;
-    text-transform: uppercase;
-    font-family: Roboto;
-  }
+  text-align: center;
+  text-transform: uppercase;
+  font-family: Roboto;
 }

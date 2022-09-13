@@ -17,6 +17,8 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import { nanoid } from 'nanoid';
+import Button from '@mui/material/Button'
+import {Link} from 'react-router-dom';
 
 function TablePaginationActions(props) {
 const theme = useTheme();
@@ -102,7 +104,6 @@ function EventList() {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
-
 
     let content;
     if (isLoading) {
@@ -192,10 +193,17 @@ function EventList() {
     }
 
     return (
-        <main>
+        <div >
             <h1>Event list</h1>
             {content}
-        </main>
+            <Link to= '/add-event'>
+                <Button
+                    color="secondary"
+                    variant="contained">
+                    Add event
+                </Button>
+            </Link>
+        </div>
     )
 }
 export default EventList;

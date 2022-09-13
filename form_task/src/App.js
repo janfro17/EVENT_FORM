@@ -14,7 +14,12 @@ function App() {
   return <BrowserRouter>
     <Routes>
       <Route path="/" element={<EventList />} />
-      <Route path="/event/ID" element={<EventView />} />
+      <Route
+          path='/event/:ID'
+          loader={({ params }) => {
+        console.log(params.ID);}}
+          action={({ params }) => {}}
+          element={<EventView animate={true} />}/>
       <Route path="/add-event" element={<EventAddFrom />} />
       <Route path="/404" element={<NotFoundPage />} />
       <Route path="*" element={<Navigate replace to="/404" />} />

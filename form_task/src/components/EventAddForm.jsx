@@ -1,20 +1,35 @@
-import React from 'react';
+import React, {useState} from 'react';
+
+//--- Formik imports --- //
 import {useFormik} from 'formik';
-import * as yup from 'yup';
+
+//--- Material UI imports ---//
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
-import {DesktopDatePicker} from '@mui/x-date-pickers/DesktopDatePicker';
-import {AdapterMoment} from '@mui/x-date-pickers/AdapterMoment';
-import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
-import moment from "moment";
-import {TimePicker} from '@mui/x-date-pickers/TimePicker';
 import InputLabel from '@mui/material/InputLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Input from '@mui/material/Input';
+
+
+//--- Material UI Picker imports ---//
+import {DatePicker} from '@mui/x-date-pickers/DatePicker';
+import {AdapterMoment} from '@mui/x-date-pickers/AdapterMoment';
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
+import {TimePicker} from '@mui/x-date-pickers/TimePicker';
+
+//--- Yup Imports ---//
+import * as yup from 'yup';
+
+//--- Custom Imports ---//
 import {useAddEventMutation } from "../api/apiSlice";
+
+//--- Moment Imports ---//
+import moment from "moment";
+
+
 
 const formStyle = {margin: '20px 0', display: 'block'}
 
@@ -28,14 +43,12 @@ const validationSchema = yup.object({
         .required('Required'),
     start_date: yup
         .date('Enter start date')
-        .min(new Date(), 'Choose future date')
         .required('Required'),
     start_time: yup
         .string('Enter start time')
         .required("Required"),
     end_date: yup
         .date('Enter end date')
-        .min(yup.ref('start_date'))
         .required('Required'),
     end_time: yup
         .string('Enter end time')
@@ -45,17 +58,16 @@ const validationSchema = yup.object({
         .min(2, 'Too Short!')
         .max(100, "Too Long!")
         .required('Required'),
-    image: yup
-        .mixed()
-        .nullable()
-        .required('A file is required')
-        .test('file size',
-            'upload file', (value) => !value || (value && value.size <= 1024 * 1024))
-        .test('format',
-            'upload file', (value) => !value || (value && supportedFormats.includes(value.type))),
-    type: yup
-        .string()
-        .required("Required"),
+    // image: yup
+    //     .mixed()
+    //     .required('A file is required, suported format: .png, .jpg, .jpeg, file size cant be higher than 1MB')
+    //     .test('file size',
+    //         'upload file', (value) => !value || (value && value.size <= 1024 * 1024))
+    //     .test('format',
+    //         'upload file', (value) => !value || (value && supportedFormats.includes(value.type))),
+    // type: yup
+    //     .string()
+    //     .required("Required"),
     phone_number: yup
         .string()
         .matches(/^[0-9]+$/, "Must be only digits")
@@ -79,10 +91,10 @@ const EventAddForm = () => {
 
     const initialValues = {
         title: '',
-        start_date: moment(),
-        start_time: moment(),
-        end_date: moment(),
-        end_time: moment(),
+        start_date: '',
+        start_time: '',
+        end_date: '',
+        end_time: '',
         description: '',
         image: null,
         type: '',
@@ -97,15 +109,13 @@ const EventAddForm = () => {
         onSubmit: (values,{resetForm} ) => {
             console.log(values);
             addEvent(values);
-            resetForm(values);
+            resetForm();
             alert(JSON.stringify(values, null, 2));
         },
     });
 
-
-
     return (
-        <div className='form'>
+        <div className='container'>
             <h1 className="form-title">Add your event</h1>
             <form onSubmit={formik.handleSubmit}>
                     <TextField
@@ -119,72 +129,125 @@ const EventAddForm = () => {
                         error={formik.touched.title && Boolean(formik.errors.title)}
                         helperText={formik.touched.title && formik.errors.title}
                     />
-                    <LocalizationProvider
-                        dateAdapter={AdapterMoment}
-                    >
-                        <DesktopDatePicker
-                            sx={formStyle}
-                            id='start_date'
-                            label='Start date'
-                            inputFormat='DD/MM/YYYY'
-                            value={formik.values.start_date}
-                            onChange={(value)=>formik.setFieldValue('start_date', value, true)}
-                            minDate={moment()}
-                            renderInput={(params) => (
-                                <TextField
-                                    error={formik.touched.start_date && Boolean(formik.errors.start_date)}
-                                    helperText={formik.touched.start_date && formik.errors.start_date}
-                                    label="Start Date"
-                                    name="start_date"
-                                    {...params} />)}
-                        />
-                        <TimePicker
-                            sx={formStyle}
-                            label='Start Time'
-                            id='start_time'
-                            ampm={false}
-                            value={formik.values.start_time}
-                            onChange={(value)=>formik.setFieldValue('start_time', value, true)}
-                            renderInput={(params) => (
-                                <TextField
-                                error={formik.touched.start_time && Boolean(formik.errors.start_time)}
-                                helperText={formik.touched.start_time && formik.errors.start_time}
-                                label="Start Time"
-                                name='start_time'
-                                {...params} />)}
-                        />
-                        <DesktopDatePicker
-                            sx={formStyle}
-                            id='end_date'
-                            label='End date'
-                            inputFormat='DD/MM/YYYY'
-                            value={formik.values.end_date}
-                            onChange={(value)=>formik.setFieldValue('end_date', value, true)}
-                            minDate={moment()}
-                            renderInput={(params) => (
-                                <TextField
-                                    error={formik.touched.end_date && Boolean(formik.errors.end_date)}
-                                    helperText={formik.touched.end_date && formik.errors.end_date}
-                                    label="End Date"
-                                    name="end_date"
-                                    {...params} />)}
-                        />
-                        <TimePicker
-                            sx={formStyle}
-                            label='End Time'
-                            id='end_time'
-                            ampm={false}
-                            value={formik.values.end_time}
-                            onChange={(value)=>formik.setFieldValue('end_time', value, true)}
-                            renderInput={(params) => (
-                                <TextField
-                                    error={formik.touched.end_time && Boolean(formik.errors.end_time)}
-                                    helperText={formik.touched.end_time && formik.errors.end_time}
-                                    label="End Time"
-                                    name='end_time'
-                                    {...params} />)}
-                        />
-                    </LocalizationProvider>
+                    {/*<LocalizationProvider*/}
+                    {/*    dateAdapter={AdapterMoment}*/}
+                    {/*>*/}
+                    {/*    <DatePicker*/}
+                    {/*        sx={formStyle}*/}
+                    {/*        id='start_date'*/}
+                    {/*        label='Start date'*/}
+                    {/*        inputFormat='DD/MM/YYYY'*/}
+                    {/*        value={formik.values.start_date}*/}
+                    {/*        onChange={(value)=>formik.setFieldValue('start_date', value, true)}*/}
+                    {/*        minDate={new Date()}*/}
+                    {/*        renderInput={(params) => (*/}
+                    {/*            <TextField*/}
+                    {/*                error={formik.touched.start_date && Boolean(formik.errors.start_date)}*/}
+                    {/*                helperText={formik.touched.start_date && formik.errors.start_date}*/}
+                    {/*                label="Start Date"*/}
+                    {/*                name="start_date"*/}
+                    {/*                {...params} />)}*/}
+                    {/*    />*/}
+
+
+                    {/*    <TimePicker*/}
+                    {/*        sx={formStyle}*/}
+                    {/*        label='Start Time'*/}
+                    {/*        id='start_time'*/}
+                    {/*        ampm={false}*/}
+                    {/*        value={formik.values.start_time}*/}
+                    {/*        onChange={(value)=>formik.setFieldValue('start_time', value, true)}*/}
+                    {/*        renderInput={(params) => (*/}
+                    {/*            <TextField*/}
+                    {/*            error={formik.touched.start_time && Boolean(formik.errors.start_time)}*/}
+                    {/*            helperText={formik.touched.start_time && formik.errors.start_time}*/}
+                    {/*            label="Start Time"*/}
+                    {/*            name='start_time'*/}
+                    {/*            {...params} />)}*/}
+                    {/*    />*/}
+                    {/*    <DatePicker*/}
+                    {/*        sx={formStyle}*/}
+                    {/*        label='End date'*/}
+                    {/*        inputFormat='DD/MM/YYYY'*/}
+                    {/*        value={formik.values.end_date}*/}
+                    {/*        onChange={(value)=>formik.setFieldValue('end_date', value, true)}*/}
+                    {/*        minDate={new Date()}*/}
+                    {/*        renderInput={(params) => (*/}
+                    {/*            <TextField*/}
+                    {/*                error={formik.touched.end_date && Boolean(formik.errors.end_date)}*/}
+                    {/*                helperText={formik.touched.end_date && formik.errors.end_date}*/}
+                    {/*                label="End Date"*/}
+                    {/*                name="end_date"*/}
+                    {/*                id='end_date'*/}
+                    {/*                {...params} />)}*/}
+                    {/*    />*/}
+                    {/*    <TimePicker*/}
+                    {/*        sx={formStyle}*/}
+                    {/*        label='End Time'*/}
+                    {/*        id='end_time'*/}
+                    {/*        ampm={false}*/}
+                    {/*        value={formik.values.end_time}*/}
+                    {/*        onChange={(value)=>formik.setFieldValue('end_time', value, true)}*/}
+                    {/*        renderInput={(params) => (*/}
+                    {/*            <TextField*/}
+                    {/*                error={formik.touched.end_time && Boolean(formik.errors.end_time)}*/}
+                    {/*                helperText={formik.touched.end_time && formik.errors.end_time}*/}
+                    {/*                label="End Time"*/}
+                    {/*                name='end_time'*/}
+                    {/*                {...params} />)}*/}
+                    {/*    />*/}
+                    {/*</LocalizationProvider>*/}
+                <TextField
+                    sx={formStyle}
+                    fullWidth
+                    id="start_date"
+                    name="start_date"
+                    label="Start date"
+                    type='date'
+                    InputLabelProps={{ shrink: true }}
+                    value={formik.values.start_date}
+                    onChange={formik.handleChange}
+                    error={formik.touched.start_date && Boolean(formik.errors.start_date)}
+                    helperText={formik.touched.start_date && formik.errors.start_date}
+                />
+                <TextField
+                    sx={formStyle}
+                    fullWidth
+                    id="start_time"
+                    name="start_time"
+                    label="Start time"
+                    type='time'
+                    InputLabelProps={{ shrink: true }}
+                    value={formik.values.start_time}
+                    onChange={formik.handleChange}
+                    error={formik.touched.start_time && Boolean(formik.errors.start_time)}
+                    helperText={formik.touched.start_time && formik.errors.start_time}
+                />
+                <TextField
+                    sx={formStyle}
+                    fullWidth
+                    id="end_date"
+                    name="end_date"
+                    label="End date"
+                    type='date'
+                    InputLabelProps={{ shrink: true }}
+                    value={formik.values.end_date}
+                    onChange={formik.handleChange}
+                    error={formik.touched.end_date && Boolean(formik.errors.end_date)}
+                    helperText={formik.touched.end_date && formik.errors.end_date}
+                /><TextField
+                    sx={formStyle}
+                    fullWidth
+                    id="end_time"
+                    name="end_time"
+                    label="End time"
+                    type='time'
+                    InputLabelProps={{ shrink: true }}
+                    value={formik.values.end_time}
+                    onChange={formik.handleChange}
+                    error={formik.touched.end_time && Boolean(formik.errors.end_time)}
+                    helperText={formik.touched.end_time && formik.errors.end_time}
+                />
                     <TextField
                         sx={formStyle}
                         fullWidth
@@ -205,17 +268,16 @@ const EventAddForm = () => {
                     sx={formStyle}>
                     <InputLabel id="type-label">Event Type</InputLabel>
                     <Select
-                        name='type'
                         fullWidth
                         labelId="type-label"
-                        id="type"
                         value={formik.values.type}
                         label="Event Type"
                         onChange={formik.handleChange}
-                    >
-                        <MenuItem value='Sport'>Sport</MenuItem>
-                        <MenuItem value='Culture'>Culture</MenuItem>
-                        <MenuItem value='Health'>Health</MenuItem>
+                        id="type"
+                        name='type'>
+                            <MenuItem value='Sport'>Sport</MenuItem>
+                            <MenuItem value='Culture'>Culture</MenuItem>
+                            <MenuItem value='Health'>Health</MenuItem>
                     </Select>
                     <FormHelperText>Please select type of the event</FormHelperText>
                 </FormControl>
@@ -259,7 +321,11 @@ const EventAddForm = () => {
                         type="submit">
                         Submit
                     </Button>
-                    <Button type="reset" >
+                    <Button
+                        type="reset"
+                        color="secondary"
+                        variant="contained"
+                        onClick={() => formik.resetForm()}>
                     Reset All
                     </Button>
             </form>
