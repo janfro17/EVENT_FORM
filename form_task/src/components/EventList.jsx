@@ -1,5 +1,5 @@
 import React from 'react';
-import {useGetEventsQuery} from "../api/apiSlice";
+import {useGetEventsQuery, useGetEventQuery} from "../api/apiSlice";
 import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -81,7 +81,11 @@ TablePaginationActions.propTypes = {
     rowsPerPage: PropTypes.number.isRequired,
 };
 
-function EventList() {
+function createData(id, title, start_date, start_time, end_date, end_time, description, image, type, place, phone, email) {
+    return {id, title, start_date, start_time, end_date, end_time, description, image, type, place, phone, email};
+}
+
+function EventList({handleID}) {
     const {
             data: events,
             isLoading,
@@ -90,9 +94,8 @@ function EventList() {
             error
         } = useGetEventsQuery();
 
-    function createData(title, start_date, start_time, end_date, end_time, description, image, type, place, phone, email) {
-            return {title, start_date, start_time, end_date, end_time, description, image, type, place, phone, email};
-    }
+
+
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -105,13 +108,15 @@ function EventList() {
         setPage(0);
     };
 
+
+
     let content;
     if (isLoading) {
         content = <p>Loading...</p>
     } else if (isSuccess) {
         const rows = [];
         events.map(event => {
-            rows.push(createData(event.title, event.start_date, event.start_time, event.end_date, event.end_time, event.description, event.image, event.type, event.place, event.phone, event.email));
+            rows.push(createData(event.id, event.title, event.start_date, event.start_time, event.end_date, event.end_time, event.description, event.image, event.type, event.place, event.phone, event.email));
         });
         const emptyRows =
             page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -143,9 +148,6 @@ function EventList() {
                                         {row.description}
                                     </TableCell>
                                     <TableCell style={{width: 160}} align="right">
-                                        {row.image}
-                                    </TableCell>
-                                    <TableCell style={{width: 160}} align="right">
                                         {row.type}
                                     </TableCell>
                                     <TableCell style={{width: 160}} align="right">
@@ -157,9 +159,18 @@ function EventList() {
                                     <TableCell style={{width: 160}} align="right">
                                         {row.email}
                                     </TableCell>
+                                    <TableCell style={{width: 160}} align="right">
+                                        <Link to='/event'>
+                                            <Button
+                                                onClick={() => handleID(row.id)}
+                                                variant='contained'
+                                                color='primary'>
+                                                View
+                                            </Button>
+                                        </Link>
+                                    </TableCell>
                                 </TableRow>
                             ))}
-
                             {emptyRows > 0 && (
                                 <TableRow style={{height: 53 * emptyRows}}>
                                     <TableCell colSpan={6}/>

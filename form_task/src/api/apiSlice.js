@@ -7,7 +7,7 @@ export const apiSlice = createApi({
     tagTypes: ['Event'],
     endpoints: (build) => ({
         getEvent: build.query({
-            query: (id) => ({url: `/event/${id}`}),
+            query: (id) => ({url: `/events/${id}`}),
         }),
         getEvents: build.query({
             query: () => '/events',

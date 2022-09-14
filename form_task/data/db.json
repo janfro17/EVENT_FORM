@@ -83,6 +83,35 @@
       "phone_number": "324443340",
       "email": "jan.kacper.froehlich@gmail.com",
       "id": 6
+    },
+    {
+      "title": "mjjjkk",
+      "start_date": "2022-09-08",
+      "start_time": "03:42",
+      "end_date": "2022-08-26",
+      "end_time": "02:42",
+      "description": "sdsfddfsdsfdfs",
+      "image": {},
+      "type": "Culture",
+      "place": "wswsswq",
+      "phone_number": "324443349",
+      "email": "jan.kacper.froehlich@gmail.com",
+      "id": 7
+    },
+    {
+      "title": "fgdfggfdgfd",
+      "start_date": "2022-09-05",
+      "start_time": "17:41",
+      "end_date": "2022-09-03",
+      "end_time": "12:44",
+      "description": "sdsfddfsdsfdfs",
+      "image": {},
+      "type": "Culture",
+      "place": "wswsswq",
+      "phone": "3244433423",
+      "email": "jan.kacper.froehlich@gmail.com",
+      "phone_number": "324443355",
+      "id": 8
     }
   ]
 }

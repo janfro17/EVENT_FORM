@@ -1,5 +1,5 @@
 import './App.css';
-import * as React from 'react';
+import React, {useState} from 'react';
 import Button from '@mui/material/Button';
 import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
 import EventAddFrom from "./components/EventAddForm";
@@ -11,15 +11,14 @@ function NotFoundPage() {
 }
 
 function App() {
+  const [ID, setID] = useState('');
+  const handleID = (id) => {
+    setID(id)};
+
   return <BrowserRouter>
     <Routes>
-      <Route path="/" element={<EventList />} />
-      <Route
-          path='/event/:ID'
-          loader={({ params }) => {
-        console.log(params.ID);}}
-          action={({ params }) => {}}
-          element={<EventView animate={true} />}/>
+      <Route path="/" element={<EventList handleID={handleID} />} />
+      <Route path='/event' element={<EventView ID={ID} />}/>
       <Route path="/add-event" element={<EventAddFrom />} />
       <Route path="/404" element={<NotFoundPage />} />
       <Route path="*" element={<Navigate replace to="/404" />} />

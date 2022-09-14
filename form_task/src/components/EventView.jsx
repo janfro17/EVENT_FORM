@@ -1,42 +1,72 @@
 import React from 'react';
 import {useGetEventQuery} from "../api/apiSlice";
-import {useParams} from "react-router-dom";
+
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
 
 
-function EventView() {
+
+function EventView({ID}) {
     const {
         data: event,
         isLoading,
         isSuccess,
         isError,
         error
-    } = useGetEventQuery();
+    } = useGetEventQuery(ID);
 
-    let params = useParams();
+
 
     let content;
     if (isLoading) {
         content = <p>Loading...</p>
     } else if (isSuccess) {
-        content = <article>
-            <p>{event.title}</p>
-            <p>{event.start_date}</p>
-            <p>{event.start_time}</p>
-            <p>{event.end_date}</p>
-            <p>{event.end_time}</p>
-            <p>{event.description}</p>
-            <p>{event.image}</p>
-            <p>{event.type}</p>
-            <p>{event.place}</p>
-            <p>{event.phone}</p>
-            <p>{event.email}</p>
-        </article>
+        content = <>
+            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                {event.title}
+            </Typography>
+            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                {event.start_date}
+            </Typography>
+            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                {event.start_time}
+            </Typography>
+            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                {event.end_date}
+            </Typography>
+            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                {event.end_time}
+            </Typography>
+            <Typography variant="body2">
+                {event.description}
+            </Typography>
+            <Typography variant="body2">
+                {event.image}
+            </Typography>
+            <Typography variant="body2">
+                {event.type}
+            </Typography>
+            <Typography variant="body2">
+                {event.place}
+            </Typography>
+            <Typography variant="body2">
+                {event.phone}
+            </Typography>
+            <Typography variant="body2">
+                {event.email}
+            </Typography>
+        </>
     } else if (isError) {
         content = <p>{error}</p>
     }
     return (
         <div className='container'>
-            {content}
+            <Card sx={{ minWidth: 275 }}>
+                <CardContent>
+                    {content}
+                </CardContent>
+            </Card>
         </div>
     );
 }
