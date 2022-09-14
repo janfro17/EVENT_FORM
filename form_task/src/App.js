@@ -1,7 +1,5 @@
-import './App.css';
 import React, {useState} from 'react';
-import Button from '@mui/material/Button';
-import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import EventAddFrom from "./components/EventAddForm";
 import EventView from "./components/EventView";
 import EventList from "./components/EventList";

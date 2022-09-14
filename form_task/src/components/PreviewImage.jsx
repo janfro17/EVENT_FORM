@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 
 function PreviewImage({file}) {
+
     const [preview, setPreview] = useState(null);
 
     const reader = new FileReader();
@@ -11,7 +12,7 @@ function PreviewImage({file}) {
 
     return (
         <div>
-            {preview ? <img src={preview} alt="'preview" width='100px' height='100px' /> : 'loading...'}
+            {preview ? <img src={preview} alt="'preview" width='100px' height='100px'/> : 'loading...'}
         </div>
     );
 }
