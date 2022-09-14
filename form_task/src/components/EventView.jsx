@@ -1,10 +1,11 @@
 import React from 'react';
-import {useGetEventQuery} from "../api/apiSlice";
+import {useGetEventQuery} from '../api/apiSlice';
 
 //--- Material UI imports ---//
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import Stack from '@mui/material/Stack';
 
 
 function EventView({ID}) {
@@ -27,45 +28,44 @@ function EventView({ID}) {
     }
 
     return (
-        <div className='container'>
-            <Card sx={{minWidth: 275}}>
-                <CardContent>
-                    <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
-                        {event.title}
-                    </Typography>
-                    <Typography sx={{mb: 1.5}} color="text.secondary">
-                        {event.start_date}
-                    </Typography>
-                    <Typography sx={{mb: 1.5}} color="text.secondary">
-                        {event.start_time}
-                    </Typography>
-                    <Typography sx={{mb: 1.5}} color="text.secondary">
-                        {event.end_date}
-                    </Typography>
-                    <Typography sx={{mb: 1.5}} color="text.secondary">
-                        {event.end_time}
-                    </Typography>
-                    <Typography variant="body2">
-                        {event.description}
-                    </Typography>
-                    <Typography variant="body2">
-                        {event.image}
-                    </Typography>
-                    <Typography variant="body2">
-                        {event.type}
-                    </Typography>
-                    <Typography variant="body2">
-                        {event.place}
-                    </Typography>
-                    <Typography variant="body2">
-                        {event.phone}
-                    </Typography>
-                    <Typography variant="body2">
-                        {event.email}
-                    </Typography>
-                </CardContent>
-            </Card>
-        </div>
+        <Container maxWidth="md">
+            <Stack spacing={3}>
+                <Card variant='outlined' sx={{minWidth: 275, textAlign: 'center', backgroundColor: 'rgb(238,238,228)'}}>
+                    <Stack spacing={3}>
+                        <Typography variant="h3" gutterBottom>
+                            {event.title}
+                        </Typography>
+                        <Typography variant="h5">
+                            Start Date: {event.start_date}
+                        </Typography>
+                        <Typography variant="h5">
+                            Start Time: {event.start_time}
+                        </Typography>
+                        <Typography variant="h5">
+                            End Date: {event.end_date}
+                        </Typography>
+                        <Typography variant="h5">
+                            End Time: {event.end_time}
+                        </Typography>
+                        <Typography variant="h5">
+                            Description: {event.description}
+                        </Typography>
+                        <Typography variant="h5">
+                            Event Type: {event.type}
+                        </Typography>
+                        <Typography variant="h5">
+                            Place: {event.place}
+                        </Typography>
+                        <Typography variant="h5">
+                            Contact Phone: {event.phone_number}
+                        </Typography>
+                        <Typography variant="h5">
+                            Contact e-mail: {event.email}
+                        </Typography>
+                    </Stack>
+                </Card>
+            </Stack>
+        </Container>
     );
 }
 
